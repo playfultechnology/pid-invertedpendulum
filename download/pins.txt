@@ -1,0 +1,15 @@
+Use veed.io to add Chinese subtitles to video tutorial
+Then use Google Translate to translate subtitles to ENglish
+
+IO No. Resource Description Peripheral Remarks
+A4 Common IO LED lights Peripheral resources on the microcontroller
+A15, B3, B4, B5 Common IO OLED display Peripheral resources on the microcontroller
+A9, A10 serial port 1 MicroUSB program download, host computer waveform display
+A5 External interrupt line 5 User button Used to turn on or off the motor (peripheral resources on the microcontroller)
+A7, A11, A12 External interrupt lines 7, 11, 12 Buttons on the adapter board Used to adjust the size of PID parameters
+A2 Buttons on the common IO adapter board Reserved buttons, select the swing mode, change the balance point of the swing
+B12, B13 Common IO motor Control motor direction
+B1 PWMB Motor Motor PWM control signal
+B6, B7 THM4_CH1, CH2 Motor encoder Encoder acquisition
+A3, A6 ADC1_IN3, IN6 ADC acquisition Collect angular displacement sensor information, voltage measurement
+Idle pins A0, A1, A8, B0, B2, B8, B9, B10, B11, B14, B15, C13, C14, C15 
