@@ -1,0 +1,12 @@
+
+使用前提：直线倒立摆顺摆和直线倒立摆硬件完全一样，就是程序不一样!使用之前需要根据【WHEELTEC 直线倒立摆上手使用手册】这个文档的教程把【直线倒立摆顺摆.hex】下载到控制器即可使用。
+
+使用方法：和倒立摆一样，除了开机的时候不需要扶摆杆到平衡位置。让摆杆自然下垂的时候开启平衡即可。
+
+关于顺摆：直线倒立摆的摆杆在没有外力作用下，会保持静止下垂的状态，当受到外力作用后，摆杆的运动状态和钟摆类似，如果不存在摩擦力的作用，摆杆将持续摆动，很多情况下，我们并不希望出现这种持续振荡的情况，例如吊车在吊动物体的时候，我们希望物体能过很快地停止摆动，方便我们把物体送到指定的位置。
+
+Prerequisites for use: The hardware of the straight-line inverted pendulum and the straight-line inverted pendulum are exactly the same, but the program is different! Before using it, you need to download the [Linear Inverted Pendulum.hex] according to the tutorial of this document [WHEELTEC The controller is ready to use.
+
+How to use: The same as the inverted pendulum, except that it is not necessary to hold the pendulum to the balance position when starting up. Turn on the balance when the pendulum is allowed to sag naturally.
+
+About the pendulum: the pendulum rod of the linear inverted pendulum will remain in a static and drooping state without the action of external force. When subjected to external force, the motion state of the pendulum rod is similar to that of the pendulum. If there is no frictional force, the pendulum rod will continue to Swing. In many cases, we do not want this kind of continuous oscillation. For example, when a crane is hoisting an object, we hope that the object can stop swinging too quickly, so that we can send the object to the designated position. 
