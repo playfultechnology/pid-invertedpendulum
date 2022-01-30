@@ -6,68 +6,69 @@
 入口参数：无
 返回  值：无
 **************************************************************************/
-void Tips(void)
-{
-	static u8 i=0;     //用于计时
-	u8 key;            //用于获取按键值
-	static u8 count=0; //用于计算检测到正确ADC值的次数
+void Tips(void) {
+	static u8 i=0;     // for timing
+	u8 key;            // for input
+	static u8 count=0; // Used to count the number of times the correct ADC value was detected 
 	
-begin: //标记开始函数的位置，如果需要调节角位移传感器，调节完毕后跳转到这里开始执行函数
+// Mark the position where the function starts. 
+// If you need to adjust the angular displacement sensor, 
+// jump to here to start the function after the adjustment. 	
+begin: 
 	
-		if(tips_flag ==1 )  //第一次tips_flag = 0 不执行到这里
-		{
-			tips_flag=0;                 //进入过检测函数，说明中断被屏蔽，需要打开所有需要用到的中断并刷新OLED
+		if(tips_flag == 1 ) {
+			tips_flag = 0;                 //进入过检测函数，说明中断被屏蔽，需要打开所有需要用到的中断并刷新OLED
 			
-		//恢复进入设置模式时屏蔽的中断
-		 EXTI->IMR |= 1<<5;	
-		 EXTI->IMR |= 1<<7;
-		 EXTI->IMR |= 1<<11;
-		 EXTI->IMR |= 1<<12;	
-     TIM1->DIER |= 0x01;			
-		 OLED_Clear(); //清屏，准备进入系统
+			// Restoring interrupts masked when entering setup mode 
+			EXTI->IMR |= 1<<5;	
+			EXTI->IMR |= 1<<7;
+			EXTI->IMR |= 1<<11;
+			EXTI->IMR |= 1<<12;	
+			TIM1->DIER |= 0x01;			
+			OLED_Clear(); // Clear the screen, ready to enter the system 
 		}
 		
-		//===程序正常运行时，只会执行这一步，如果需要进入调节模式，才会使用到其它函数
+		// When the program is running normally, only this step will be performed.
+		// If you need to enter the adjustment mode, other functions will be used. 
 		else
-		oled_show();  //===显示屏打开		
+			oled_show();	
 
-	  key = Long_Press(); //检测按键，长按1s左右进入调节模式
-		if(key==1)
-		{
-			system_start=1;
+	  key = Long_Press(); // If button held for 1 sec, enter the adjustment mode 
+		if(key == 1) {
+			system_start = 1;
 		}
 		
- //用户长按按键，system_start=1，进入调节函数
-  if(system_start==1)
-	 {
-		 system_start=0;    //标志不进入调节角位移函数，开机后这个函数只能被执行一次
+	// If the user presses the button for a long time, system_start=1, and enters the adjustment function 
+	if(system_start == 1) {
+		 system_start = 0;    //The flag does not enter the adjustment angular displacement function, this function can only be executed once after booting 
 		 OLED_Clear();     //清屏
-		 tips_flag = 1;	  //把 tips_flag = 1,保证以后把角度调节合理后能恢复所有中断和保证OLED能刷新一次并显示
-		 PWMB=0;         //关停电机，防止电机保留了数值一直运动
+		 tips_flag = 1;	  // Set tips_flag = 1 to ensure that all interruptions can be recovered after adjusting the angle reasonably and that the OLED can be refreshed and displayed once 
+		 PWMB=0;         // Turn off the motor to prevent the motor from keeping the value and keep moving 
 		 
-	 //调节模式下屏蔽系统用到的中断
+		// Shield the interrupts used by the system in regulation mode 
 		 EXTI->IMR &= ~(1<<5);	
 		 EXTI->IMR &= ~(1<<7);
 		 EXTI->IMR &= ~(1<<11);
 		 EXTI->IMR &= ~(1<<12);
-		 TIM1->DIER &= 0xFE;   //进入调试模式后，暂时关闭定时器1中断
+		 TIM1->DIER &= 0xFE;   // After entering debug mode, temporarily disable timer 1 interrupt 
 		 
-	//提示页面
-   while(1)
-  {
-		  page_tips:	         //提示页	
-		   key = click();
-			 show_Tips();     //显示信息： 启动角位移安装检查模式，请根据提示操作。按下用户按键确认...
-		   delay_ms(30);   //延迟消抖，防止下一页往上翻时太容易连续翻两页
-       if(key==5)    //如果按下用户按键，清屏并执行下一步  or 如果用户按下返回上一页按键，退出调节
-			 {
+	// Tips page 
+	while(1) {
+		page_tips: //提示页	
+			key = click();
+			// Display information: Start the angular displacement installation check mode, 
+			// please follow the prompts. Press the user key to confirm... 
+			show_Tips();     
+			delay_ms(30);   // Delay and debounce to prevent it from being too easy to turn two pages in a row when the next page is turned up 
+			// If the user button is pressed, clear the screen and go to the next step 
+			// or if the user presses the back button, exit the adjustment 			
+			if(key==5) {
 				 OLED_Clear();  
-				 while(1)
-				 {
-					 page_0:          //第0页
-					 delay_ms(30);   //延迟消抖，防止下一页往上翻时太容易连续翻两页
-					 key = click(); //检测按键
-					 step_0();     //显示信息：请固定好倒立摆，使摆杆垂直向下并保持静止。安装完毕后按下一页按键继续...
+				 while(1) {
+					 page_0:
+						delay_ms(30);   //延迟消抖，防止下一页往上翻时太容易连续翻两页
+						key = click(); // Detect input
+						step_0();     // Display message: Please fix the pendulum so that the pendulum is straight down and still. After installation, press the Next button to continue... 
 					 if(key==11)//下一页
 					 {
 						 OLED_Clear();
