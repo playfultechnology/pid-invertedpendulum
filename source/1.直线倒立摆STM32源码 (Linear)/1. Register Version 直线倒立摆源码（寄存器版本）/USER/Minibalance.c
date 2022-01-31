@@ -29,11 +29,10 @@ int main(void)
 	Encoder_Init_TIM4();            //=====初始化编码器（TIM2的编码器接口模式） 
 	Adc_Init();                     //=====角位移传感器模拟量采集初始化
 	Timer1_Init(49,7199);           //=====定时中断初始化 
-	while(1)
-		{      
-				DataScope();	            //===上位机
-		   	Tips();                   //===OLED显示与提示
-				delay_flag=1;	            //===50ms中断精准延时标志位		  
-				while(delay_flag);        //===50ms中断精准延时  主要是波形显示上位机需要严格的50ms传输周期
-		} 
+	while(1) {      
+		DataScope();	            //===上位机
+		Tips();                   //===OLED显示与提示
+		delay_flag=1;	            //===50ms中断精准延时标志位		  
+		while(delay_flag);        //===50ms中断精准延时  主要是波形显示上位机需要严格的50ms传输周期
+	} 
 }
