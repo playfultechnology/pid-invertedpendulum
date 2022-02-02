@@ -8,6 +8,7 @@ Input functionality is defined in the Key() method of BALANCE\CONTROL\control.c 
  - ( Double Click USER : Reverse Direction Balance according to code, but I can't see how you'd be able to do this)
  - Long Press X : Toggle Auto-Balance Mode
  - Press M : Cycle between selected PID parameter (indicated by Y on the OLED screen)
+ - Long Press M : Bring up help text
  - +/- : Increase/decrease selected PID parameter
 
 When Auto-Balance is selected, the Blue LED L2 will light up. 
