@@ -1,12 +1,14 @@
 # pid-invertedpendulum
 
 ## Method of Operation
-There are four buttons on the control unit - two on the top (labelled RESET, USER), and two on the front (labelled X, M). 
+There are four buttons on the control unit - two on the top (labelled RESET, USER), two on the front (labelled X, M), and two on the back (labelled +/-)
 Input functionality is defined in the Key() method of BALANCE\CONTROL\control.c as follows:
  - Press RESET button : Resets to default state
  - Single Click USER button : Start / Stop balancing
  - ( Double Click USER : Reverse Direction Balance according to code, but I can't see how you'd be able to do this)
- - Long Press X : Toggle Auto-Balance Mode.
+ - Long Press X : Toggle Auto-Balance Mode
+ - Press M : Cycle between selected PID parameter (indicated by Y on the OLED screen)
+ - +/- : Increase/decrease selected PID parameter
 
 When Auto-Balance is selected, the Blue LED L2 will light up. 
 Before continuing, **ensure the trolley is located all the way to the left-hand side** (i.e the encoder value P is shown close to 10000).
@@ -29,8 +31,8 @@ OLED readout shows values as follows:
  - VOL: Voltage
  - T: Target Position
  - P: Actual Linear Encoder Reading (5,850 at extreme right, 10,000 at extreme left)
- - ADC: Rotary Encoder Reading  (0 when pointing left, increasing anti-clockwise to 4096 after full rotation. So 1024=down, 2048=right, 3072=up).
-
+ - ADC: Rotary Encoder Reading  (0 when pointing left, increasing anti-clockwise to 4096 after full rotation. So 1024=down, 2048=right, 3072=up)
+ - Note that the selected PID parameter that will be edited by the +/- buttons is indicated by a Y, other parameters have an N
 ![](OLED_output.png)
 
 ## Code Structure
