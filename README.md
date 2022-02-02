@@ -8,7 +8,9 @@ Input functionality is defined in the Key() method of BALANCE\CONTROL\control.c 
  - ( Double Click USER : Reverse Direction Balance according to code, but I can't see how you'd be able to do this)
  - Long Press X : Toggle Auto-Balance Mode.
 
-When Auto-Balance is selected, the Blue LED L2 will light up. Starting balancing in this mode will swing the pendulum back and forward until it reaches a point when:
+When Auto-Balance is selected, the Blue LED L2 will light up. 
+Before continuing, **ensure the trolley is located all the way to the left-hand side** (i.e the encoder value P is shown close to 10000).
+Starting balancing in this mode will swing the pendulum back and forward until it reaches a point when:
  - the position is not close to the edge
  - the angle is near the balance point
  - the angular velocity is close to 0
