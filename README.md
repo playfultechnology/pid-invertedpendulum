@@ -1,12 +1,14 @@
 # pid-invertedpendulum
 
 ## Method of Operation
-There is a single user input button. Its functionality is defined in the Key() method of BALANCE\CONTROL\control.c as follows:
- - Single Click : Forward Direction Balance
- - Double Click : Reverse Direction Balance
- - Long Press : Toggle Auto-Balance Mode
+There are four buttons on the control unit - two on the top (labelled RESET, USER), and two on the front (labelled X, M). 
+Input functionality is defined in the Key() method of BALANCE\CONTROL\control.c as follows:
+ - Press RESET button : Resets to default state
+ - Single Click USER button : Start / Stop balancing
+ - ( Double Click USER : Reverse Direction Balance according to code, but I can't see how you'd be able to do this)
+ - Long Press X : Toggle Auto-Balance Mode.
 
-Auto-Balance mode will swing the pendulum back and forward until it reaches a point when:
+When Auto-Balance is selected, the Blue LED L2 will light up. Starting balancing in this mode will swing the pendulum back and forward until it reaches a point when:
  - the position is not close to the edge
  - the angle is near the balance point
  - the angular velocity is close to 0
@@ -16,6 +18,18 @@ The pendulum will _stop_ attempting to balance whenever any of the conditions in
  - Voltage falls below 700
  - Flag_Stop = 1
  - Angle_Balance differs from balance point by > 500
+
+## Display
+OLED readout shows values as follows:
+ - B-KP, B-KD: Balance KP, KD PID control values
+ - P-KP, P-KD: Position KP, KD PID control values
+ - A: Amplitudes (1-4)
+ - VOL: Voltage
+ - T: Target Position
+ - P: Actual Linear Encoder Reading (5,850 at extreme right, 10,000 at extreme left)
+ - ADC: Rotary Encoder Reading  (0 when pointing left, increasing anti-clockwise to 4096 after full rotation. So 1024=down, 2048=right, 3072=up).
+
+![](OLED_output.png)
 
 ## Code Structure
  - The main() program loop is contained in USER\Minibalance.c, but you'll find it quite sparse - it begins by initialising all the hardware and then enters an infinite while() loop whose only function appears to be to update the display.
