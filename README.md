@@ -36,3 +36,4 @@ OLED readout shows values as follows:
 ## Code Structure
  - The main() program loop is contained in USER\Minibalance.c, but you'll find it quite sparse - it begins by initialising all the hardware and then enters an infinite while() loop whose only function appears to be to update the display.
  - The reason is that the control loop is actually contained in the TIM1_UP_IRQHandler() function defined in BALANCE\CONTROL\control.c, which is an interrupt service routine called every 5ms.
+ - Some input functions are defined in HARDWARE\exti\EXTI15_10_IRQHandler
