@@ -2,9 +2,10 @@
 
 This repository contains code to accompany an "Inverted Pendulum" based on an STM32F103C8 controller I bought on AliExpress.
 
-| | |
 | Controller Top Layer | Controller Bottom Layer |
-| <img src="Top_board.jpg" height="200"> | <img src="Bottom_board.jpg" width="200"> | 
+| --- | --- |
+| <img src="Top_board.jpg" height="200"> | <img src="Bottom_board.jpg" width="200"> |
+
 
 - :heavy_check_mark: The product was described as being provided with source code
 - :x: It was not
