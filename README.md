@@ -1,6 +1,10 @@
 # pid-invertedpendulum
 
-This repository contains code to accompany an "Inverted Pendulum" with STM controller I bought on AliExpress.
+This repository contains code to accompany an "Inverted Pendulum" based on an STM32F103C8 controller I bought on AliExpress.
+
+![](Top_board.jpg)
+![](Bottom_board.jpg)
+
 
 - :heavy_check_mark: The product was described as being provided with source code
 - :x: It was not
@@ -14,6 +18,9 @@ This repository contains code to accompany an "Inverted Pendulum" with STM contr
 - :x: Even when translated, the comments weren't always accurate  
 
 So, I basically ending up having to reverse-engineer the source code from a combination of how the product actually behaved, what the product description said it should do, what the translated Chinese comments said it did, and what the code actually did. And this repository is the result.
+
+To compile and upload code to the board, first download 
+
 
 ## Calibration
 Before use, the system should be calibrated as follows:
