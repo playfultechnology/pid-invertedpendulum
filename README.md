@@ -2,16 +2,16 @@
 
 This repository contains code to accompany an "Inverted Pendulum" with STM controller I bought on AliExpress.
 
-- [x] The product was described as being provided with source code
-- [ ] It was not
-- [x] After contacting the seller, they did email me a download
-- [ ] The download was a zip archive consisting of a load of various projects, unsorted files, and various directories, in Chinese
-- [x] I was able to work out which sections of the download related to the STM32 source code running on the device
-- [ ] I'm not that familiar with STM32 project structure
-- [X] The code was commented
-- [ ] The comments were in Chinese
-- [X] Google Translate exists! And I know some Chinese programmers
-- [ ] Even when translated, the comments weren't always accurate  
+- :heavy_check_mark: The product was described as being provided with source code
+- :x: It was not
+- :heavy_check_mark: After contacting the seller a few times, they did email me a download
+- :x: The download was a zip archive consisting of a load of various projects, unsorted files, and various directories, in Chinese
+- :heavy_check_mark: I was able to work out which sections of the download related to the STM32 source code running on the device
+- :x: I'm not that familiar with STM32 project structure
+- :heavy_check_mark: The code was commented
+- :x: The comments were in Chinese
+- :heavy_check_mark: Google Translate exists! And I know some Chinese programmers
+- :x: Even when translated, the comments weren't always accurate  
 
 So, I basically ending up having to reverse-engineer the source code from a combination of how the product actually behaved, what the product description said it should do, what the translated Chinese comments said it did, and what the code actually did. And this repository is the result.
 
