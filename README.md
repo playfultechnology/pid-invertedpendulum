@@ -20,7 +20,11 @@ This repository contains code to accompany an "Inverted Pendulum" based on an ST
 
 So, I basically ending up having to reverse-engineer the source code from a combination of how the product actually behaved, what the product description said it should do, what the translated Chinese comments said it did, and what the code actually did. And this repository is the result.
 
-To compile and upload code to the board, first download 
+To compile and upload code to the board, you will need:
+
+- The [Keil MDK and uVision IDE](https://www.keil.com/demo/eval/arm.htm)
+- [ST-Link](https://www.ebay.co.uk/itm/313809775705) - a USB dongle that acts as a debugger and uploader to the STM32 board
+- The [ST-Link Driver](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-utilities/stsw-link009.html#get-software) for the above
 
 
 ## Calibration
