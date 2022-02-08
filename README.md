@@ -27,6 +27,8 @@ To compile and upload code to the board, you will need:
 - The [ST-Link Driver](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-utilities/stsw-link009.html#get-software) for the above (current v.2.0.2, 5Mb)
 - You may also want to download [STM32CubeMx](https://www.st.com/en/development-tools/stm32cubemx.html#overview) which is a sort of wizard/template configuration tool. You tell it the particular STM32 board you're targetting and the peripherals you want to use, and it will create a basic template project that you can load in uVision, and already has the necessary boilerplate configuration code. Again, you need to register with an email address to access the download link (current v6.4, 345Mb)
 
+The hardware is:
+ - WDD35D4-5K Angular Encoder
 
 ## Calibration
 Before use, the system should be calibrated as follows:
