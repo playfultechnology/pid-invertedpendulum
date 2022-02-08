@@ -59,7 +59,7 @@ void uart_init(u32 pclk2,u32 bound)
 	RCC->APB2RSTR|=1<<14;   //复位串口1
 	RCC->APB2RSTR&=~(1<<14);//停止复位	   	   
 	//波特率设置
- 	USART1->BRR=mantissa; // 波特率设置	 
-	USART1->CR1|=0X200C;  //1位停止,无校验位.
+ 	USART1->BRR=mantissa; // Baud rate setting 
+	USART1->CR1|=0X200C;  // 1 bit stop, no parity bit. 
 
 }
