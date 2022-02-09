@@ -25,7 +25,9 @@ Core/Src/stm32f1xx_hal_msp.o: ../Core/Src/stm32f1xx_hal_msp.c \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
+ ../Core/Inc/gpio.h ../Core/Inc/main.h ../Core/Inc/adc.h \
+ ../Core/Inc/tim.h ../Core/Inc/usart.h
 
 ../Core/Inc/main.h:
 
@@ -82,3 +84,13 @@ Core/Src/stm32f1xx_hal_msp.o: ../Core/Src/stm32f1xx_hal_msp.c \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
+
+../Core/Inc/gpio.h:
+
+../Core/Inc/main.h:
+
+../Core/Inc/adc.h:
+
+../Core/Inc/tim.h:
+
+../Core/Inc/usart.h:
