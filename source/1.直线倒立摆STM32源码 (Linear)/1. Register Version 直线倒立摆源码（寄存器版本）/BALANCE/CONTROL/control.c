@@ -33,71 +33,64 @@ u8 left,right;
 函数功能：所有的控制代码都在这里面
           TIM1控制的5ms定时中断 
 **************************************************************************/
-int TIM1_UP_IRQHandler(void) {
-	// 5ms timer interrupt 
+int TIM1_UP_IRQHandler(void)  
+{    
 	if(TIM1->SR&0X0001)//5ms定时中断
-	{
-		// Clear Timer 1 Interrupt Flag 
-		TIM1->SR&=~(1<<0);                                       //===清除定时器1中断标志位	                     
-		if(delay_flag==1) {
-			if(++delay_50==10)	 delay_50=0, delay_flag=0;          //===给主函数提供50ms的精准延时  10次*5ms = 50ms
-		}		
-		Encoder=Read_Encoder(4);             	                   //===更新编码器位置信息	 
-		Angle_Balance=Get_Adc_Average(3,10);                     //===更新姿态	
-		Get_D_Angle_Balance();                                   //===获得摆杆角速度
+	{   
+		  TIM1->SR&=~(1<<0);                                       //===清除定时器1中断标志位	                     
+	     if(delay_flag==1)
+			 {
+				 if(++delay_50==10)	 delay_50=0,delay_flag=0;          //===给主函数提供50ms的精准延时  10次*5ms = 50ms
+			 }		
+    	Encoder=Read_Encoder(4);             	                   //===更新编码器位置信息	 
+      Angle_Balance=Get_Adc_Average(3,10);                     //===更新姿态	
+      Get_D_Angle_Balance();                                   //===获得摆杆角速度
 			
-		if(auto_run==1) //自动起摆模式
-		{
-			if(Flag_Stop==0)
-			{	
-				// Start swing step 0 and return to midpoint on the edge.
-				// The internal implementation of the function executes the function only once 
-				Find_Zero();//起摆第0步，在边缘回到中点。函数内部实现只执行一次功能
-				if(autorun_step0==1) Auto_run();//执行自动起摆			
-				Xianfu_Pwm();
-				
-				// Slider edge protection in auto-lift step 1 
-				//自动起摆步骤1中的滑块边缘保护
-				if(autorun_step1==0&&(Encoder>=9900||Encoder<=5900))
-				Set_Pwm(0),Flag_Stop=1;		
-				
-				// Angle protection after successful swing, edge protection 
-				//起摆成功后的角度保护，边缘保护
-				if((success_flag==1)&&((!((Angle_Balance>ANGLE_MIDDLE-600)&&(Angle_Balance<ANGLE_MIDDLE+600))) ||(Encoder>=9900||Encoder<=5900)))
-				Set_Pwm(0),Flag_Stop=1;
+      if(auto_run==1) //自动起摆模式
+      {
+				if(Flag_Stop==0)
+				{
 					
-				else
-					Set_Pwm(Moto);
-			}
-		}						 
-		if(auto_run==0)
-    {
-			// Low voltage protection
-			Turn_Off(Voltage);//倾角、电压保护
-			if(Swing_up==0) Position_Zero=Encoder, Last_Position=0, Last_Bias=0, Position_Target=0, Swing_up=1;	
-			if(Flag_Stop==0)
-			{
-				Balance_Pwm =Balance(Angle_Balance);                                          //===角度PD控制	
-				if(++Position_Target>4) Position_Pwm=Position(Encoder),Position_Target=0;    //===位置PD控制 25ms进行一次位置控制
-				Moto=Balance_Pwm-Position_Pwm;      //===计算电机最终PWM
-				Xianfu_Pwm(),                         //===PWM限幅 防止占空比100%带来的系统不稳定因素
-		    Set_Pwm(Moto);                      //===赋值给PWM寄存器				
-			}
-		}
-    if(Flag_Stop==1)	
-			Set_Pwm(0);
-	}
-	
-	// Blinking LED indicates normal operation
-  if(Flag_Stop==0)	Led_Flash(100);      //===LED闪烁指示系统正常运行
-	
-	// Get battery voltage 
-	Voltage=Get_battery_volt();           //===获取电池电压
+					Find_Zero();//起摆第0步，在边缘回到中点。函数内部实现只执行一次功能
+					if(autorun_step0==1) Auto_run();//执行自动起摆			
+					Xianfu_Pwm();
+					
+					//自动起摆步骤1中的滑块边缘保护
+					if(autorun_step1==0&&(Encoder>=9900||Encoder<=5900))
+					Set_Pwm(0),Flag_Stop=1;		
 
-	// Read input
-	Key();                                //===扫描按键变化
-	
-	return 0;	  
+					
+					//起摆成功后的角度保护，边缘保护
+					if((success_flag==1)&&((!((Angle_Balance>ANGLE_MIDDLE-600)&&(Angle_Balance<ANGLE_MIDDLE+600))) ||(Encoder>=9900||Encoder<=5900)))
+          Set_Pwm(0),Flag_Stop=1;
+					
+					else
+					Set_Pwm(Moto);
+				}
+
+			}						 
+		  if(auto_run==0)
+      {
+				Turn_Off(Voltage);//倾角、电压保护
+				if(Swing_up==0) Position_Zero=Encoder,Last_Position=0,Last_Bias=0,Position_Target=0,Swing_up=1;
+				
+				if(Flag_Stop==0)
+				{
+					Balance_Pwm =Balance(Angle_Balance);                                          //===角度PD控制	
+					if(++Position_Target>4) Position_Pwm=Position(Encoder),Position_Target=0;    //===位置PD控制 25ms进行一次位置控制
+					Moto=Balance_Pwm-Position_Pwm;      //===计算电机最终PWM
+				  Xianfu_Pwm(),                         //===PWM限幅 防止占空比100%带来的系统不稳定因素
+		      Set_Pwm(Moto);                      //===赋值给PWM寄存器				
+				}
+
+			}
+       if(Flag_Stop==1)	
+			 Set_Pwm(0);
+		}	
+    if(Flag_Stop==0)	Led_Flash(100);      //===LED闪烁指示系统正常运行 
+		Voltage=Get_battery_volt();           //===获取电池电压	      
+		Key();                                //===扫描按键变化    	
+	 return 0;	  
 } 
 
 /**************************************************************************
@@ -140,9 +133,9 @@ int Position(int Encoder)
 **************************************************************************/
 void Set_Pwm(int moto)
 {
-	if(moto<0) BIN2=1, BIN1=0;
-	else BIN2=0, BIN1=1;
-	PWMB=myabs(moto);
+    	if(moto<0)			BIN2=1,			BIN1=0;
+			else 	          BIN2=0,			BIN1=1;
+			PWMB=myabs(moto);
 }
 
 /**************************************************************************
@@ -152,9 +145,9 @@ void Set_Pwm(int moto)
 **************************************************************************/
 void Xianfu_Pwm(void)
 {	
-	int Amplitude=6900;    //===PWM满幅是7200 限制在6900
-	if(Moto<-Amplitude) Moto=-Amplitude;	
-	if(Moto>Amplitude)  Moto=Amplitude;		
+	  int Amplitude=6900;    //===PWM满幅是7200 限制在6900
+	  if(Moto<-Amplitude) Moto=-Amplitude;	
+		if(Moto>Amplitude)  Moto=Amplitude;		
 }
 /**************************************************************************
 函数功能：按键修改控制摆杆的位置
@@ -162,35 +155,26 @@ void Xianfu_Pwm(void)
 返回  值：无
 **************************************************************************/
 void Key(void)
-{
-	// The product uses a 13-wire Hall sensor motor with a reduction ratio of 20.
-	// The program uses a 4-fold frequency.
-	// The value on the encoder when the motor rotates once is therefore 13*4*20 = 1040 
-	// 产品使用的是13线霍尔传感器电机，20减速比，程序上用的是4倍频，电机转一圈编码器上的数值是13*4*20 = 1040
-	
-	// Target position The original position of the motor is 10000, and one revolution is 1040.
-	// It is related to the accuracy of the encoder.
-	// The default is one revolution of the Z axis of the pendulum rod, and 1040 transition edges are output. 
-	int position = 1040; //目标位置 电机原始位置是10000  转一圈是1040 和编码器精度有关，默认是摆杆Z轴转一圈，输出1040个跳变沿
+{	
+	// 产品使用的是13线霍尔传感器电机，20减速比，程序上用的是4倍频，电机转一圈编码器上的数值是13*4*20 = 1040 
+	int position=1040; //目标位置 电机原始位置是10000  转一圈是1040 和编码器精度有关，默认是摆杆Z轴转一圈，输出1040个跳变沿
 	static int tmp,flag,count;
 	tmp=click_N_Double(100); 
 	
 	if(tmp==1)flag=1;//++
   if(tmp==2)flag=2;//--
-
-	// Positive
+	
 	if(flag==1) //摆杆向正方向运动
 	{
 		Position_Zero+=4;
 		count+=4;	
-		if(count==position)	flag=0,count=0;
-	}
-	// Negative
-	if(flag==2) //摆杆向反方向运动
+		if(count==position) 	flag=0,count=0;
+	}	
+		if(flag==2) //摆杆向反方向运动
 	{
 		Position_Zero-=4;
 		count+=4;	
-		if(count==position)	flag=0,count=0;
+		if(count==position) 	flag=0,count=0;
 	}
 	
 	if(Long_Press_KEY2()==1)
@@ -199,9 +183,10 @@ void Key(void)
 		auto_run=!auto_run;
 	}
 	
-	if(Flag_Stop==1) {
-		if(auto_run==1) {
-			// Automatic swing mode
+	if(Flag_Stop==1)
+	{
+		if(auto_run==1)
+		{
 			//提示信息
 			//自动起摆模式
 			LED=0;
@@ -219,25 +204,24 @@ void Key(void)
 **************************************************************************/
 u8 Turn_Off(int voltage)
 {
-	u8 temp; 
-	if(1==Flag_Stop) //电池电压过低，关闭电机
-	{	      
-		Flag_Stop=1;				
-		temp=1;                                            
-		BIN1=0;                                            
-		BIN2=0;
-	}
-	else
-		temp=0;
-	
-	// If the angle differs from the balance point by > 500, or voltage drops below 700 
-	if(!(Angle_Balance>(ZHONGZHI-500)&&Angle_Balance<(ZHONGZHI+500))||(voltage<700))
-	{
-		Flag_Stop=1;
-		temp=1;
-	}
+	    u8 temp; 
+			if(1==Flag_Stop) //电池电压过低，关闭电机
+			{	      
+      Flag_Stop=1;				
+      temp=1;                                            
+			BIN1=0;                                            
+			BIN2=0;
+      }
+			else
+      temp=0;
+				
+			if(!(Angle_Balance>(ZHONGZHI-500)&&Angle_Balance<(ZHONGZHI+500))||(voltage<700))
+			{
+				Flag_Stop=1;
+				temp=1;
+			}
 
-	return temp;			
+      return temp;			
 }
 
 /**************************************************************************
@@ -301,110 +285,103 @@ void Auto_run(void)
 
 	if(autorun_step1==0)  //自动起摆第一步   （第一次执行，一定是进入这里）
 	{
-		// Decide which way to turn
-		//判断应该往哪一边换向						
-		if((Angle_Balance>(ANGLE_ORIGIN-120)&&Angle_Balance<(ANGLE_ORIGIN+120))) {
-			if(D_Angle_Balance<=0) right=1;
-			else if(D_Angle_Balance>0) left=1;
-		}	
-
-		//判断当摆杆回到初始位置时应该给出速度和位移
-		if(left==1) {
-			if((Angle_Balance>(ANGLE_ORIGIN-50)&&Angle_Balance<(ANGLE_ORIGIN+50))) {
-				left=0;
-				Target_Position=POSITION_MIDDLE+800;
-				// Let the pendulum adjust slowly until it is stable
-				if(speed>1) Target_Position=POSITION_MIDDLE+160; //让摆杆缓慢调节直至满足稳摆
-			}
-		}	
-		else if(right==1) {
-			if((Angle_Balance>(ANGLE_ORIGIN-50)&&Angle_Balance<(ANGLE_ORIGIN+50))) {
-				right=0;
-				Target_Position=POSITION_MIDDLE-482;
-				// Let the pendulum adjust slowly until it is stable
-				if(speed>1) Target_Position=POSITION_MIDDLE-160; //让摆杆缓慢调节直至满足稳摆
-			}
-		}							
-
-		// Position closed loop control
-		//位置闭环控制
-	  Moto = Position_PID(Encoder, Target_Position); 
-		
-		// The pendulum has reached near the equilibrium point and begins the slow adjustment phase
-		//摆杆已经到达过平衡点附近，开始缓慢调节阶段。
-		if(Angle_Balance<(ANGLE_MIDDLE+385)&&Angle_Balance>(ANGLE_MIDDLE-385)) {
-			speed++;
-		}
-
-		// Judging whether the current situation is in line with the swing: swing elements: 
-		// the position is not on the edge, the angle is near the balance point, and the angular velocity is close to 0 
-		//判断当前情况是否符合起摆：起摆要素：位置不在边缘、角度在平衡点附近、角速度接近于0
-		if(Angle_Balance<(ANGLE_MIDDLE+120)&&Angle_Balance>(ANGLE_MIDDLE-120)&&(Encoder>6300&&Encoder<9300)&&(D_Angle_Balance>-30&&D_Angle_Balance<30))
-		{
-			speed++;
-			success_count++;		
-		}
-    
-		// If it is not within the condition range, it needs to be reset to wait for the next judgment 
-    else success_count = 0;//如果没在条件范围内，则需要重新清零等待下次判断
-
-		// Satisfy 3 times of starting and swinging, the mark can be successfully started
-		// and the pid at the moment of starting and swinging is given. 
-		//满足3次起摆情况，标记可以成功起摆，并给出起摆瞬间的pid
-		if(success_count>3) { 
-			autorun_step1=1,success_flag=1;
-			Balance_KP=210,Balance_KD=150,Position_KP=8,Position_KD=130;//自动起摆瞬间的pid参数
-		}
-	
-		// Limits
-		//限幅
-		if(Moto>4100)	Moto=4100;   //控制位置闭环控制过程的速度
-		if(Moto<-5100)Moto=-5100;	
-	}
-	// Satisfy the start-up conditions, normal start-up 
-	//满足起摆条件，正常起摆
-	else if(success_flag==1)//到最高点，起摆
-	{	
-		// Before starting the swing, first obtain the current position as the target point of balance 
-		if(wait_count==0) Position_Zero=Encoder;//起摆前，先获取当前位置作为平衡的目标点
-		Balance_Pwm =Balance(Angle_Balance);                                          //===角度PD控制	
-		if(++Position_Target>4)   Position_Pwm=Position(Encoder),Position_Target=0;    //===位置PD控制 25ms进行一次位置控制
-		
-		// After starting for a while, let the pendulum slowly return to the middle point 
-		//起摆一段时间后，让摆杆缓慢恢复到中间点
-		wait_count++;
-		if(wait_count>100&&wait_count<2000) {
-			if(Position_Zero>8100) Position_Zero--;
-			else if(Position_Zero<8100)Position_Zero++;
-		}
-		// Lock the counter value to prevent overflow loop 
-		if(wait_count>2000) wait_count = 2001;//锁住计数器值防止溢出循环
-		
-		// Adjust the pid stage after starting the swing.
-		// The pid parameter required for the start-up moment is different from the stable swing.
-		// Therefore, when the swing is successfully entered into the stable swing,
-		// the pid parameter can be adjusted back to the value when the swing was stable. 
-		//起摆后调节pid阶段	 起摆瞬间与稳摆需要的pid参数不一样 所以当起摆成功进入稳摆后，即可以把pid参数调回稳摆时的数值				 
-		if(help_count==0)
-		{
-			pid_adjust ++ ;
-			// Adjust slowly to avoid shock and instability 
-			if( pid_adjust%100==0) //缓慢调节 避免出现震荡失稳
+			 //判断应该往哪一边换向						
+			if((Angle_Balance>(ANGLE_ORIGIN-120)&&Angle_Balance<(ANGLE_ORIGIN+120)))
 			{
-				Balance_KP += 10;
-				Balance_KD += 10;
-				Position_KP += 0.5;
-				Position_KD +=10;
+				if(D_Angle_Balance<=0) right=1;
+				else if(D_Angle_Balance>0) left=1;
+			}	
+
+			//判断当摆杆回到初始位置时应该给出速度和位移
+			if(left==1)
+			{
+				if((Angle_Balance>(ANGLE_ORIGIN-50)&&Angle_Balance<(ANGLE_ORIGIN+50)))
+				{
+					left=0;
+					Target_Position=POSITION_MIDDLE+800;
+					if(speed>1) Target_Position=POSITION_MIDDLE+160; //让摆杆缓慢调节直至满足稳摆
+				}
+			}	
+
+			else if(right==1)
+			{
+				if((Angle_Balance>(ANGLE_ORIGIN-50)&&Angle_Balance<(ANGLE_ORIGIN+50)))
+				{
+					right=0;
+					Target_Position=POSITION_MIDDLE-482;
+					if(speed>1) Target_Position=POSITION_MIDDLE-160; //让摆杆缓慢调节直至满足稳摆
+				}
+			}							
+			
+		   //位置闭环控制
+	  	 Moto=Position_PID(Encoder,Target_Position); 
+			
+		 //摆杆已经到达过平衡点附近，开始缓慢调节阶段。
+			if(Angle_Balance<(ANGLE_MIDDLE+385)&&Angle_Balance>(ANGLE_MIDDLE-385)) 
+			{
+				speed++;
 			}
-			if(Balance_KP>400) Balance_KP=400;
-			if(Balance_KD>400) Balance_KD=400;
-			if(Position_KP>20) Position_KP=20;
-			if(Position_KD>300) Position_KD=300;
-			if(Balance_KP==400&&Balance_KD==400&&Position_KP==20&&Position_KD==300) help_count=1; //参数调节完毕后，释放pid数值限幅，此时用户可以通过按键改变pid参数
-		}		 
-		//融合输出，最终效果
-		Moto=Balance_Pwm-Position_Pwm;     //读取PD控制器输出PWM
+
+			//判断当前情况是否符合起摆：起摆要素：位置不在边缘、角度在平衡点附近、角速度接近于0
+			if(Angle_Balance<(ANGLE_MIDDLE+120)&&Angle_Balance>(ANGLE_MIDDLE-120)&&(Encoder>6300&&Encoder<9300)&&(D_Angle_Balance>-30&&D_Angle_Balance<30))
+			{
+				speed++;
+				success_count++;		
+			}
+       
+       else success_count = 0;//如果没在条件范围内，则需要重新清零等待下次判断
+
+			//满足3次起摆情况，标记可以成功起摆，并给出起摆瞬间的pid
+			if(success_count>3)
+			{ 
+				autorun_step1=1,success_flag=1;
+				Balance_KP=210,Balance_KD=150,Position_KP=8,Position_KD=130;//自动起摆瞬间的pid参数
+			}
+	
+			//限幅
+			if(Moto>4100)	Moto=4100;   //控制位置闭环控制过程的速度
+			if(Moto<-5100)Moto=-5100;	
 	}
+				
+		//满足起摆条件，正常起摆
+		else if(success_flag==1)//到最高点，起摆
+		{	
+			
+			 if(wait_count==0) Position_Zero=Encoder;//起摆前，先获取当前位置作为平衡的目标点
+			 Balance_Pwm =Balance(Angle_Balance);                                          //===角度PD控制	
+			 if(++Position_Target>4)   Position_Pwm=Position(Encoder),Position_Target=0;    //===位置PD控制 25ms进行一次位置控制
+			
+			
+			//起摆一段时间后，让摆杆缓慢恢复到中间点
+			 wait_count++;
+			 if(wait_count>100&&wait_count<2000) 
+			 {
+				 if(Position_Zero>8100) Position_Zero--;
+				 else if(Position_Zero<8100)Position_Zero++;
+			 }
+			 if(wait_count>2000) wait_count = 2001;//锁住计数器值防止溢出循环
+			 
+			 //起摆后调节pid阶段	 起摆瞬间与稳摆需要的pid参数不一样 所以当起摆成功进入稳摆后，即可以把pid参数调回稳摆时的数值				 
+			 if(help_count==0)
+			 {
+				 pid_adjust ++ ;
+				 if( pid_adjust%100==0) //缓慢调节 避免出现震荡失稳
+				 {
+					 Balance_KP+=10;
+					 Balance_KD+=10;
+					 Position_KP += 0.5 ;
+					 Position_KD +=10 ;
+				 }
+				 if(Balance_KP>400) Balance_KP=400;
+				 if(Balance_KD>400) Balance_KD=400;
+				 if(Position_KP>20) Position_KP=20;
+				 if(Position_KD>300)Position_KD=300;
+				 if(Balance_KP==400&&Balance_KD==400&&Position_KP==20&&Position_KD==300) help_count=1; //参数调节完毕后，释放pid数值限幅，此时用户可以通过按键改变pid参数
+			 }		 
+
+				//融合输出，最终效果
+				Moto=Balance_Pwm-Position_Pwm;     //读取PD控制器输出PWM
+		}
 }
 /**************************************************************************
 函数功能：增量PI控制器
@@ -481,13 +458,14 @@ pwm代表输出
 **************************************************************************/
 int Position_PID (int Encoder,int Target)
 { 	
-	Position_Least = Encoder-Target;             //===
-	Position_Bias *=0.8;		   
-	Position_Bias += Position_Least*0.2;	             //===一阶低通滤波器  
-	Position_Differential = Position_Bias-Last_Position;
-	Last_Position = Position_Bias;
-	Position_PWM = Position_Bias*Position_KP+Position_Differential*Position_KD; //===速度控制		
-	return Position_PWM;
+	
+	  Position_Least =Encoder-Target;             //===
+    Position_Bias *=0.8;		   
+    Position_Bias += Position_Least*0.2;	             //===一阶低通滤波器  
+	  Position_Differential=Position_Bias-Last_Position;
+	  Last_Position=Position_Bias;
+		Position_PWM=Position_Bias*Position_KP+Position_Differential*Position_KD; //===速度控制		
+	  return Position_PWM;
 }
 
 /**************************************************************************
@@ -498,11 +476,11 @@ int Position_PID (int Encoder,int Target)
 **************************************************************************/
 int Pre_Position(int Encoder)
 {  
-	static float Position_PWM,Last_Position,Position_Bias,Position_Differential;
-	Position_Bias = Encoder-Position_Zero; //===得到偏差
-	Position_Differential = Position_Bias-Last_Position;//偏差积分
-	Last_Position = Position_Bias;//保存上一次偏差
-	Position_PWM = Position_Bias*25+Position_Differential*600; //===位置控制	
-	return Position_PWM;//返回值
+    static float Position_PWM,Last_Position,Position_Bias,Position_Differential;
+  	Position_Bias =Encoder-Position_Zero; //===得到偏差
+		Position_Differential=Position_Bias-Last_Position;//偏差积分
+		Last_Position=Position_Bias;//保存上一次偏差
+    Position_PWM=Position_Bias*25+Position_Differential*600; //===位置控制	
+		return Position_PWM;//返回值
 }
 

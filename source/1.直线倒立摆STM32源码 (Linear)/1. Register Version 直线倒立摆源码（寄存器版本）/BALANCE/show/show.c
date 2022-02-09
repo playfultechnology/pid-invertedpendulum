@@ -48,8 +48,7 @@ void oled_show(void)
 		
 		OLED_ShowString(95,30,"A:");	  
 		OLED_ShowNumber(108,30,Amplitude4,2,12);
-		//======这是滚动菜单 选择需要调节的PD参数
-			// This is the scrolling menu to select the PD parameters that need to be adjusted 
+		//======这是滚动菜单 选择需要调节的PD参数											
 		  if(Menu==1)
 	   	{
 			 OLED_ShowChar(75,00,'Y',12,1);   
