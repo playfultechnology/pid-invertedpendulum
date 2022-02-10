@@ -6,10 +6,10 @@
 ���ߣ�ƽ��С��֮�� 
 �Ա����̣�http://shop114407458.taobao.com/
 **************************************************************************/		   
-u8 OLED_GRAM[128][8];	 
+uint8_t OLED_GRAM[128][8];
 void OLED_Refresh_Gram(void)
 {
-	u8 i,n;		    
+	uint8_t i,n;
 	for(i=0;i<8;i++)  
 	{  
 		OLED_WR_Byte (0xb0+i,OLED_CMD);    //����ҳ��ַ��0~7��
@@ -22,9 +22,9 @@ void OLED_Refresh_Gram(void)
 //��OLEDд��һ���ֽڡ�
 //dat:Ҫд�������/����
 //cmd:����/�����־ 0,��ʾ����;1,��ʾ����;
-void OLED_WR_Byte(u8 dat,u8 cmd)
+void OLED_WR_Byte(uint8_t dat,uint8_t cmd)
 {	
-	u8 i;			  
+	uint8_t i;
 	if(cmd)
 	  OLED_RS_Set();
 	else 
@@ -60,7 +60,7 @@ void OLED_Display_Off(void)
 //��������,������,������Ļ�Ǻ�ɫ��!��û����һ��!!!	  
 void OLED_Clear(void)  
 {  
-	u8 i,n;  
+	uint8_t i,n;
 	for(i=0;i<8;i++)for(n=0;n<128;n++)OLED_GRAM[n][i]=0X00;  
 	OLED_Refresh_Gram();//������ʾ
 }
@@ -68,9 +68,9 @@ void OLED_Clear(void)
 //x:0~127
 //y:0~63
 //t:1 ��� 0,���				   
-void OLED_DrawPoint(u8 x,u8 y,u8 t)
+void OLED_DrawPoint(uint8_t x,uint8_t y,uint8_t t)
 {
-	u8 pos,bx,temp=0;
+	uint8_t pos,bx,temp=0;
 	if(x>127||y>63)return;//������Χ��.
 	pos=7-y/8;
 	bx=y%8;
@@ -85,10 +85,10 @@ void OLED_DrawPoint(u8 x,u8 y,u8 t)
 //y:0~63
 //mode:0,������ʾ;1,������ʾ				 
 //size:ѡ������ 16/12 
-void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 size,u8 mode)
+void OLED_ShowChar(uint8_t x,uint8_t y,uint8_t chr,uint8_t size,uint8_t mode)
 {      			    
-	u8 temp,t,t1;
-	u8 y0=y;
+	uint8_t temp,t,t1;
+	uint8_t y0=y;
 	chr=chr-' ';//�õ�ƫ�ƺ��ֵ				   
     for(t=0;t<size;t++)
     {   
@@ -110,9 +110,9 @@ void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 size,u8 mode)
     }          
 }
 //m^n����
-u32 oled_pow(u8 m,u8 n)
+uint32_t oled_pow(uint8_t m,uint8_t n)
 {
-	u32 result=1;	 
+	uint32_t result=1;
 	while(n--)result*=m;    
 	return result;
 }				  
@@ -122,10 +122,10 @@ u32 oled_pow(u8 m,u8 n)
 //size:�����С
 //mode:ģʽ	0,���ģʽ;1,����ģʽ
 //num:��ֵ(0~4294967295);	 		  
-void OLED_ShowNumber(u8 x,u8 y,u32 num,u8 len,u8 size)
+void OLED_ShowNumber(uint8_t x,uint8_t y,uint32_t num,uint8_t len,uint8_t size)
 {         	
-	u8 t,temp;
-	u8 enshow=0;						   
+	uint8_t t,temp;
+	uint8_t enshow=0;
 	for(t=0;t<len;t++)
 	{
 		temp=(num/oled_pow(10,len-t-1))%10;
@@ -146,7 +146,7 @@ void OLED_ShowNumber(u8 x,u8 y,u32 num,u8 len,u8 size)
 //x,y:�������  
 //*p:�ַ�����ʼ��ַ
 //��16����
-void OLED_ShowString(u8 x,u8 y,const u8 *p)
+void OLED_ShowString(uint8_t x,uint8_t y,const uint8_t *p)
 {
 #define MAX_CHAR_POSX 122
 #define MAX_CHAR_POSY 58          
@@ -161,10 +161,10 @@ void OLED_ShowString(u8 x,u8 y,const u8 *p)
 }	   
 
 //��ʾ16*16���庺��
-void OLED_ShowChinese(u8 x,u8 y,u16 chr,u8 mode)
+void OLED_ShowChinese(uint8_t x,uint8_t y,uint16_t chr,uint8_t mode)
 {      			    
-	u8 temp,t,t1;
-	u8 y0=y;
+	uint8_t temp,t,t1;
+	uint8_t y0=y;
   for(t=0;t<32;t++)
 	{
 		temp=asc2_Chinese[chr][t];
@@ -185,10 +185,10 @@ void OLED_ShowChinese(u8 x,u8 y,u16 chr,u8 mode)
 }
 
 
-void OLED_ShowChinese_12(u8 x,u8 y,u16 chr,u8 mode)
+void OLED_ShowChinese_12(uint8_t x,uint8_t y,uint16_t chr,uint8_t mode)
 {      			    
-	u8 temp,t,t1;
-	u8 y0=y;
+	uint8_t temp,t,t1;
+	uint8_t y0=y;
   for(t=0;t<28;t++)
 	{
 		temp=asc2_Chinese_12[chr][t];

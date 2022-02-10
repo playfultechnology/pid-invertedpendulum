@@ -27,7 +27,8 @@ System/delay/delay.o: ../System/delay/delay.c ../System/delay/delay.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  ../Core/Inc/gpio.h ../Core/Inc/main.h ../Core/Inc/adc.h \
- ../Core/Inc/tim.h ../Core/Inc/usart.h
+ ../Core/Inc/tim.h ../Core/Inc/usart.h \
+ C:/Users/alast/Documents/GitHub/pid-invertedpendulum/project/Hardware/OLED/oled.h
 
 ../System/delay/delay.h:
 
@@ -96,3 +97,5 @@ System/delay/delay.o: ../System/delay/delay.c ../System/delay/delay.h \
 ../Core/Inc/tim.h:
 
 ../Core/Inc/usart.h:
+
+C:/Users/alast/Documents/GitHub/pid-invertedpendulum/project/Hardware/OLED/oled.h:

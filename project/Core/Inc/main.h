@@ -35,6 +35,7 @@ extern "C" {
 #include "adc.h"
 #include "tim.h"
 #include "usart.h"
+#include "oled.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

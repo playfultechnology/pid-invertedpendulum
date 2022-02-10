@@ -22,18 +22,18 @@
 #define OLED_CMD  0	//д����
 #define OLED_DATA 1	//д����
 //OLED�����ú���
-void OLED_WR_Byte(u8 dat,u8 cmd);	    
+void OLED_WR_Byte(uint8_t dat,uint8_t cmd);
 void OLED_Display_On(void);
 void OLED_Display_Off(void);
 void OLED_Refresh_Gram(void);		   				   		    
 void OLED_Init(void);
 void OLED_Clear(void);
-void OLED_DrawPoint(u8 x,u8 y,u8 t);
-void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 size,u8 mode);
-void OLED_ShowNumber(u8 x,u8 y,u32 num,u8 len,u8 size);
-void OLED_ShowString(u8 x,u8 y,const u8 *p);	 
-void OLED_ShowChinese(u8 x,u8 y,u16 chr,u8 mode);
-void OLED_ShowChinese_12(u8 x,u8 y,u16 chr,u8 mode);
+void OLED_DrawPoint(uint8_t x,uint8_t y,uint8_t t);
+void OLED_ShowChar(uint8_t x,uint8_t y,uint8_t chr,uint8_t size,uint8_t mode);
+void OLED_ShowNumber(uint8_t x,uint8_t y,uint32_t num,uint8_t len,uint8_t size);
+void OLED_ShowString(uint8_t x,uint8_t y,const uint8_t *p);
+void OLED_ShowChinese(uint8_t x,uint8_t y,uint16_t chr,uint8_t mode);
+void OLED_ShowChinese_12(uint8_t x,uint8_t y,uint16_t chr,uint8_t mode);
 
 /* ֧�ַ�����ʾ */
 //void OLED_ShowNumber(u8 x,u8 y,u32 num,u8 len,u8 mode);

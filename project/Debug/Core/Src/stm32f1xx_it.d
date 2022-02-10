@@ -27,7 +27,9 @@ Core/Src/stm32f1xx_it.o: ../Core/Src/stm32f1xx_it.c ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  ../Core/Inc/gpio.h ../Core/Inc/main.h ../Core/Inc/adc.h \
- ../Core/Inc/tim.h ../Core/Inc/usart.h ../Core/Inc/stm32f1xx_it.h
+ ../Core/Inc/tim.h ../Core/Inc/usart.h \
+ C:/Users/alast/Documents/GitHub/pid-invertedpendulum/project/Hardware/OLED/oled.h \
+ ../Core/Inc/stm32f1xx_it.h
 
 ../Core/Inc/main.h:
 
@@ -94,5 +96,7 @@ Core/Src/stm32f1xx_it.o: ../Core/Src/stm32f1xx_it.c ../Core/Inc/main.h \
 ../Core/Inc/tim.h:
 
 ../Core/Inc/usart.h:
+
+C:/Users/alast/Documents/GitHub/pid-invertedpendulum/project/Hardware/OLED/oled.h:
 
 ../Core/Inc/stm32f1xx_it.h:
