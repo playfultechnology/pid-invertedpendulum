@@ -1,0 +1,10 @@
+show.c:13:6:oled_show	8	static
+show.c:106:6:DataScope	4	static
+show.c:129:6:show_Tips	4	static
+show.c:170:6:step_0	4	static
+show.c:215:6:step_1	4	static
+show.c:259:6:step_2	4	static
+show.c:312:6:step_3	4	static
+show.c:341:6:check_display	4	static
+show.c:378:6:success_display	4	static
+show.c:400:6:fail_display	4	static

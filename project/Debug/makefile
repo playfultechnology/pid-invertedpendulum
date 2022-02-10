@@ -9,6 +9,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include User/show/subdir.mk
 -include System/delay/subdir.mk
 -include Hardware/OLED/subdir.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
@@ -51,6 +52,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 InvertedPendulum.list \
 
+OBJCOPY_HEX += \
+InvertedPendulum.hex \
+
 OBJCOPY_BIN += \
 InvertedPendulum.bin \
 
@@ -77,6 +81,11 @@ InvertedPendulum.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS
 	@echo 'Finished building: $@'
 	@echo ' '
 
+InvertedPendulum.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "InvertedPendulum.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 InvertedPendulum.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "InvertedPendulum.bin"
 	@echo 'Finished building: $@'
@@ -84,10 +93,10 @@ InvertedPendulum.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 
 # Other Targets
 clean:
-	-$(RM) InvertedPendulum.bin InvertedPendulum.elf InvertedPendulum.list default.size.stdout
+	-$(RM) InvertedPendulum.bin InvertedPendulum.elf InvertedPendulum.hex InvertedPendulum.list default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
