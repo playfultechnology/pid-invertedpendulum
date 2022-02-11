@@ -60,7 +60,37 @@ void Error_Handler(void);
 
 /* USER CODE END EFP */
 
-
+/* Private defines -----------------------------------------------------------*/
+#define reserved_key_Pin GPIO_PIN_2
+#define reserved_key_GPIO_Port GPIOA
+#define LED_Pin GPIO_PIN_4
+#define LED_GPIO_Port GPIOA
+#define User_key_Pin GPIO_PIN_5
+#define User_key_GPIO_Port GPIOA
+#define User_key_EXTI_IRQn EXTI9_5_IRQn
+#define menu_key_Pin GPIO_PIN_7
+#define menu_key_GPIO_Port GPIOA
+#define menu_key_EXTI_IRQn EXTI9_5_IRQn
+#define PWMB_Pin GPIO_PIN_1
+#define PWMB_GPIO_Port GPIOB
+#define BIN2_Pin GPIO_PIN_12
+#define BIN2_GPIO_Port GPIOB
+#define BIN1_Pin GPIO_PIN_13
+#define BIN1_GPIO_Port GPIOB
+#define pid_plus_Pin GPIO_PIN_11
+#define pid_plus_GPIO_Port GPIOA
+#define pid_plus_EXTI_IRQn EXTI15_10_IRQn
+#define pid_reduce_Pin GPIO_PIN_12
+#define pid_reduce_GPIO_Port GPIOA
+#define pid_reduce_EXTI_IRQn EXTI15_10_IRQn
+#define OLED_DC_Pin GPIO_PIN_15
+#define OLED_DC_GPIO_Port GPIOA
+#define OLED_RSE_Pin GPIO_PIN_3
+#define OLED_RSE_GPIO_Port GPIOB
+#define OLED_SDA_Pin GPIO_PIN_4
+#define OLED_SDA_GPIO_Port GPIOB
+#define OLED_SCL_Pin GPIO_PIN_5
+#define OLED_SCL_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 #define reserved_key_Pin GPIO_PIN_2
 #define reserved_key_GPIO_Port GPIOA
@@ -119,12 +149,12 @@ typedef __I uint16_t vuc16;
 typedef __I uint8_t vuc8;
 
 //位带操作,实现51类似的GPIO控制功能
-//具体实现思想,参考<<CM3权威指南>>第五章(87页~92页).
+//具体实现思想,参�??<<CM3权威指南>>第五�?(87页~92�?).
 //IO口操作宏定义
 #define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2))
 #define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr))
 #define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum))
-//IO口地址映射
+//IO口地�?映射
 #define GPIOA_ODR_Addr    (GPIOA_BASE+12) //0x4001080C
 #define GPIOB_ODR_Addr    (GPIOB_BASE+12) //0x40010C0C
 #define GPIOC_ODR_Addr    (GPIOC_BASE+12) //0x4001100C
@@ -141,8 +171,8 @@ typedef __I uint8_t vuc8;
 #define GPIOF_IDR_Addr    (GPIOF_BASE+8) //0x40011A08
 #define GPIOG_IDR_Addr    (GPIOG_BASE+8) //0x40011E08
 
-//IO口操作,只对单一的IO口!
-//确保n的值小于16!
+//IO口操�?,只对单一的IO�?!
+//确保n的�?�小�?16!
 #define PAout(n)   BIT_ADDR(GPIOA_ODR_Addr,n)  //输出
 #define PAin(n)    BIT_ADDR(GPIOA_IDR_Addr,n)  //输入
 #define PBout(n)   BIT_ADDR(GPIOB_ODR_Addr,n)  //输出
