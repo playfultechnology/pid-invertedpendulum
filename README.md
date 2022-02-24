@@ -2,11 +2,6 @@
 
 This repository contains code to accompany an "Inverted Pendulum" based on an STM32F103C8 controller I bought on AliExpress.
 
-| Controller Top Layer | Controller Bottom Layer |
-| --- | --- |
-| <img src="images/Top_board.jpg" height="200"> | <img src="images/Bottom_board.jpg" width="200"> |
-
-
 - :heavy_check_mark: The product was described as being provided with source code
 - :x: It was not
 - :heavy_check_mark: After contacting the seller a few times, they did email me a download
@@ -20,14 +15,15 @@ This repository contains code to accompany an "Inverted Pendulum" based on an ST
 
 So, I basically ending up having to reverse-engineer the source code from a combination of how the product actually behaved, what the product description said it should do, what the translated Chinese comments said it did, and what the code actually did. And this repository is the result.
 
-To compile and upload code to the board, you will need:
+## Hardware
+The same pendulum (and other similar PID control robots) is available from various sellers: I purchased from "HansaRobot" but the packaging was labelled as "Wheeltec", while the source code was commented as "MiniBalance". I'm not sure if these are all the same company, whether they are distributors, or clones of each other, but I'm fairly sure the hardware is identical and looks like this.
+<img src="images/Inverted_pendulum.jpg">
 
-- The [Keil MDK and uVision IDE](https://www.keil.com/demo/eval/arm.htm) - you will need to register with an email address to access the download (current v5.36, 912Mb)
-- [ST-Link](https://www.ebay.co.uk/itm/313809775705) - a USB dongle that acts as a debugger and uploader to the STM32 board
-- The [ST-Link Driver](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-utilities/stsw-link009.html#get-software) for the above (current v.2.0.2, 5Mb)
-- You may also want to download [STM32CubeMx](https://www.st.com/en/development-tools/stm32cubemx.html#overview) which is a sort of wizard/template configuration tool. You tell it the particular STM32 board you're targetting and the peripherals you want to use, and it will create a basic template project that you can load in uVision, and already has the necessary boilerplate configuration code. Again, you need to register with an email address to access the download link (current v6.4, 345Mb)
+| Controller Top Layer | Controller Bottom Layer |
+| --- | --- |
+| <img src="images/Top_board.jpg" height="200"> | <img src="images/Bottom_board.jpg" width="200"> |
 
-The hardware is:
+The components used are:
  - WDD35D4-5K Angular Encoder
 
 ## Calibration
@@ -71,6 +67,29 @@ OLED readout shows values as follows:
  - ADC: Rotary Encoder Reading  (0 when pointing left, increasing anti-clockwise to 4096 after full rotation. So 1024=down, 2048=right, 3072=up)
  - Note that the selected PID parameter that will be edited by the +/- buttons is indicated by a Y, other parameters have an N
 ![](images/OLED_output.png)
+
+## Modifying the Software
+While the above describes the operation of the pendulum as supplied, the main attraction for me was the fact that the source code of the controller could be reprogrammed. It uses an STM32F103C8 board based on an ARM processor, somewhat similar to an Arduino/ESP, except designed more for industrial control. 
+
+### Using Keil
+The source code comes supplied as a Keil project, so to compile and upload the supplied code to the board, you will need:
+- The [Keil MDK and uVision IDE](https://www.keil.com/demo/eval/arm.htm) - you will need to register with an email address to access the download (current v5.36, 912Mb)
+- [ST-Link](https://www.ebay.co.uk/itm/313809775705) - a USB dongle that acts as a debugger and uploader to the STM32 board
+- The [ST-Link Driver](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-utilities/stsw-link009.html#get-software) for the above (current v.2.0.2, 5Mb)
+
+### Using STMCube
+Keil has a limitation of 32kB in the free version. If you want to adapt the supplied source code or create your own STM32 projects without this restriction, you may prefer to use an alternative IDE instead.
+- [STMCube32IDE](https://www.st.com/en/development-tools/stm32cubeide.html) is the completely free, "official" IDE from ST. It has all the same functionality as Keil, but uses a slightly different project structure and settings, so you can't just directly port the Keil project across (I tried but have been unsuccessful so far).
+- STMCube32IDE has an inbuilt option to automatically upload to the STM32 board after compilation but, for some reason, it wouldn't work for me. So after compiling, I manually uploaded the .hex file using [STMCube32Programmer] instead (https://www.st.com/en/development-tools/stm32cubeprog.html)
+- You may also want to download [STM32CubeMx](https://www.st.com/en/development-tools/stm32cubemx.html#overview) which is a sort of wizard/template configuration tool. You tell it the particular STM32 board you're targetting and the peripherals you want to use, and it will create a basic template project that you can load in uVision, and already has the necessary boilerplate configuration code. Again, you need to register with an email address to access the download link (current v6.4, 345Mb)
+
+A few additional notes on using STMCube:
+- We need to be able to reference the .h header files from the .c source code files (i.e so that the lines #include "mylibrary.h" can find mylibrary.h). To do that, right click on folders in the Project Explorer and select _Add/Remove Include Paths_ for any folder that contains an .h file
+- We also need to tell the linker where to find the compiled source code files. To do *that*, go
+_Project -> Properties -> C/C++ General -> Paths and Symbols -> Source Location_ to add any folders containing source files Apply and Close (note that you do not need to go into child folders - top level folder is sufficient).
+- It seems that a lot of the source code makes use of "non-standard" datatype aliases. i.e. u8, u16 instead of uint8_t and unit16_t. I do see typedefs for them in one of the include files, but that's one of the includes that's giving me errors..... I'm not sure what value they have compared to using C standard types - is that a Keil thing perhaps?
+- To compile the .hex file that can be uploaded to the board with STMVube32Programmer, go _Project -> Properties -> C/C++ Build -> Settings -> MCU Post Build Outputs_ Check "Convert to Intel Hex file"
+
 
 ## Code Structure
  - The main() program loop is contained in USER\Minibalance.c, but you'll find it quite sparse - it begins by initialising all the hardware and then enters an infinite while() loop whose only function appears to be to update the display.
