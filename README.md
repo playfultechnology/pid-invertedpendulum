@@ -4,7 +4,7 @@ This repository contains code to accompany an "Inverted Pendulum" based on an ST
 
 | Controller Top Layer | Controller Bottom Layer |
 | --- | --- |
-| <img src="Top_board.jpg" height="200"> | <img src="Bottom_board.jpg" width="200"> |
+| <img src="images/Top_board.jpg" height="200"> | <img src="images/Bottom_board.jpg" width="200"> |
 
 
 - :heavy_check_mark: The product was described as being provided with source code
@@ -70,7 +70,7 @@ OLED readout shows values as follows:
  - P: Actual Linear Encoder Reading (5,850 at extreme right, 10,000 at extreme left)
  - ADC: Rotary Encoder Reading  (0 when pointing left, increasing anti-clockwise to 4096 after full rotation. So 1024=down, 2048=right, 3072=up)
  - Note that the selected PID parameter that will be edited by the +/- buttons is indicated by a Y, other parameters have an N
-![](OLED_output.png)
+![](images/OLED_output.png)
 
 ## Code Structure
  - The main() program loop is contained in USER\Minibalance.c, but you'll find it quite sparse - it begins by initialising all the hardware and then enters an infinite while() loop whose only function appears to be to update the display.
