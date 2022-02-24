@@ -80,7 +80,7 @@ The source code comes supplied as a Keil project, so to compile and upload the s
 ### Using STMCube
 Keil has a limitation of 32kB in the free version. If you want to adapt the supplied source code or create your own STM32 projects without this restriction, you may prefer to use an alternative IDE instead.
 - [STMCube32IDE](https://www.st.com/en/development-tools/stm32cubeide.html) is the completely free, "official" IDE from ST. It has all the same functionality as Keil, but uses a slightly different project structure and settings, so you can't just directly port the Keil project across (I tried but have been unsuccessful so far).
-- STMCube32IDE has an inbuilt option to automatically upload to the STM32 board after compilation but, for some reason, it wouldn't work for me. So after compiling, I manually uploaded the .hex file using [STMCube32Programmer] instead (https://www.st.com/en/development-tools/stm32cubeprog.html)
+- STMCube32IDE has an inbuilt option to automatically upload to the STM32 board after compilation but, for some reason, it wouldn't work for me. So after compiling, I manually uploaded the .hex file using [STMCube32Programmer](https://www.st.com/en/development-tools/stm32cubeprog.html) instead.
 - You may also want to download [STM32CubeMx](https://www.st.com/en/development-tools/stm32cubemx.html#overview) which is a sort of wizard/template configuration tool. You tell it the particular STM32 board you're targetting and the peripherals you want to use, and it will create a basic template project that you can load in uVision, and already has the necessary boilerplate configuration code. Again, you need to register with an email address to access the download link (current v6.4, 345Mb)
 
 A few additional notes on using STMCube:
