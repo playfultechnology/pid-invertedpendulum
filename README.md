@@ -25,6 +25,7 @@ The same pendulum (and other similar PID control robots) is available from vario
 
 The components used are:
  - WDD35D4-5K Angular Encoder
+ - [MG513P2012V Motor](https://www.aliexpress.com/item/4000996252848.html)
 
 ## Calibration
 Before use, the system should be calibrated as follows:
